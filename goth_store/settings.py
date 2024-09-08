@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-tfx@8&8r_ymvj#y&(!2dw)0mdi(lz*5w)!n*2y7!ki3i=&pk1p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "kezia-salsalina-gothstore.pbp.cs.ui.ac.id"]
 
 
 # Application definition
