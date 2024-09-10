@@ -1,5 +1,6 @@
 ## 💀 ⛓️ Goth Store ⚰️🦇
-#### 🔗[CLICK HERE TO BE DIRECTED TO MY APP](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
+## ASSIGNMENT 2
+#### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
 ### 1. Implementation of the Checklist: Step-by-Step 📝
 #### ✔️Create a new Django project.
 - Create a new directory with the name ```"goth-store"```
@@ -108,4 +109,16 @@
 - Before deploying, create a new public GitHub repository named goth-store. Then, initialize the local directory goth-store as a Git repository.
 - After making sure local repository is connected to the GitHub, do a add, commit, and push
 - For deployment, create a PWS project named gothstore. Then add ```kezia-salsalina-gothstore.pbp.cs.ui.ac.id``` to ```ALLOWED_HOSTS``` in ```settings.py```. 
-- Finally, use the ```push``` command to push it to the PWS repository for the deployment.
+    ```
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "kezia-salsalina-gothstore.pbp.cs.ui.ac.id"]
+    ```
+- Finally, use the ```push``` command to push it to the PWS repository for deployment.
+
+### 2. A diagram that contains the request client to a Django-based web application and the response it gives.
+
+![alt text](diagram.png)
+
+
+### 3. Explain the use of git in software development!
+### 4. Why is Django used as the starting point for learning software development?
+### 5. Why is the Django model called an ORM?
