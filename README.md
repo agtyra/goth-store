@@ -1,4 +1,4 @@
-## 💀 ⛓️ Goth Store ⚰️🦇
+# 💀 ⛓️ Goth Store ⚰️🦇
 ## ASSIGNMENT 2
 #### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
 ### 1. Implementation of the Checklist: Step-by-Step 📝
@@ -117,8 +117,17 @@
 ### 2. A diagram that contains the request client to a Django-based web application and the response it gives.
 
 ![alt text](diagram.png)
-
+- The diagram explains the relationships between Django components:
+    - urls.py: Matches the incoming URL request and routes it to the appropriate view.
+    - views.py: Handles the logic, interacting with the models.py for data, then passes the data to the HTML template for rendering.
+    - models.py: Handles database interactions, passing data back to views.py.
+    - The HTML template renders the final response which is sent back to the client.
 
 ### 3. Explain the use of git in software development!
+- Git is a widely used version control system in software development that helps manage and track changes in code. It allows multiple developers to collaborate efficiently by enabling them to work on different features or bug fixes in parallel. With Git, developers can commit changes, create branches for separate tasks, and merge them back into the main project while keeping a history of all changes. This makes it easier to revert to previous versions if needed and resolve conflicts that arise during collaboration. Overall, Git ensures better code management, collaboration, and project organization.
+
 ### 4. Why is Django used as the starting point for learning software development?
+- Django is often used as a starting point for learning software development because it offers a comprehensive, beginner-friendly structure for building web applications. It includes built-in features like authentication, routing, and database management, reducing the need for external tools and allowing learners to focus on core development concepts. 
+
 ### 5. Why is the Django model called an ORM?
+- The Django model is called an ORM (Object-Relational Mapper) because it acts as a bridge between the database and the code by mapping database tables to Python objects. In Django, each model corresponds to a table in the database, and the fields in the model represent the columns of that table. The ORM allows developers to interact with the database using Python code instead of writing raw SQL queries. This abstraction makes database operations like creating, reading, updating, and deleting records easier and more intuitive, while also ensuring that the code remains database-agnostic, meaning it can work with different types of databases without needing modification.
