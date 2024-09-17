@@ -250,13 +250,3 @@
     path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
 ]   ```
-
-### POSTMAN
-#### XML
-![alt text](xml.png)
-#### JSON
-![alt text](json.png)
-#### XML BY ID
-![alt text](xmlbyid.png)
-#### JSON BY ID
-![alt text](jsonbyid.png)
