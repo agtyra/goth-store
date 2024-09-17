@@ -257,6 +257,6 @@
 #### JSON
 ![alt text](json.png)
 #### XML BY ID
-![alt text](xml by id.png)
+![alt text](xmlbyid.png)
 #### JSON BY ID
-![alt text](json by id.png)
+![alt text](jsonbyid.png)
