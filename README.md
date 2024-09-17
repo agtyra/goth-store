@@ -131,3 +131,132 @@
 
 ### 5. Why is the Django model called an ORM?
 - The Django model is called an ORM (Object-Relational Mapper) because it acts as a bridge between the database and the code by mapping database tables to Python objects. In Django, each model corresponds to a table in the database, and the fields in the model represent the columns of that table. The ORM allows developers to interact with the database using Python code instead of writing raw SQL queries. This abstraction makes database operations like creating, reading, updating, and deleting records easier and more intuitive, while also ensuring that the code remains database-agnostic, meaning it can work with different types of databases without needing modification.
+
+## ASSIGNMENT 3
+###  Explain why we need data delivery in implementing a platform.
+- Data delivery is crucial in platform implementation because it enables communication between different components, services, or systems. Whether it’s between the front end and the back end, or between various microservices in a distributed architecture, data needs to be exchanged seamlessly for the platform to function properly. For example, user actions on the front end often require data from the server or database, which is then processed and delivered back to be displayed to the user. Data delivery also ensures that external systems or APIs can integrate with the platform to enhance its functionality, such as with payment gateways or external authentication services. Without efficient data delivery, a platform would fail to provide a cohesive user experience and proper functionality.
+
+### In your opinion, which is better, XML or JSON? Why is JSON more popular than XML?
+- In my opinion, JSON is generally better than XML, especially in modern web development, because it is simpler, more lightweight, and easier to parse. JSON (JavaScript Object Notation) is more human-readable and aligns naturally with JavaScript, which makes it more suitable for web-based platforms. XML, on the other hand, tends to be more verbose and harder to read due to its nested structure and use of closing tags. While XML has its use cases, such as in configuration files or when document formatting is important, JSON has gained popularity because of its simplicity and efficiency. 
+
+### Explain the functional usage of the ```is_valid()``` method in Django forms. Why do we need this method in forms?
+- The ```is_valid()``` method in Django forms is used to check whether the data provided in the form meets the validation rules defined for each form field. When you call ```is_valid()```, Django automatically runs through the validation logic for each field, ensuring that all the required fields are filled, and the data provided is in the correct format (e.g., checking if an email is valid or if a date is properly formatted). This method is necessary because it allows developers to ensure that the data they are working with is clean and valid before saving it to the database or processing it further. Without this check, invalid data might be processed or stored, leading to potential errors and inconsistencies in the application.
+
+### Why do we need ```csrf_token``` when creating a form in Django? What could happen if we did not use ```csrf_token``` on a Django form? How could this be leveraged by an attacker?
+- The ```csrf_token``` is needed in Django forms to prevent Cross-Site Request Forgery (CSRF) attacks, which occur when malicious sites attempt to execute unauthorized actions on behalf of authenticated users. When a form is submitted in Django, the ```csrf_token``` ensures that the request originated from the correct website and not from a third-party attacker. If we did not include the ```csrf_token``` in forms, attackers could craft requests that perform actions on the website (e.g., deleting user data, making purchases) without the user’s consent. Without this security measure, an attacker could use social engineering tactics to trick users into clicking links that perform unwanted actions on websites where they are logged in, making the platform vulnerable to attacks.
+
+### Explain how you implemented the checklist above step-by-step
+#### ✔️Create a form input to add a model object to the previous app.
+- Create a new file in the main directory with the name forms.py and added the following code. 
+    ```
+    from django.forms import ModelForm
+    from main.models import Product
+
+    class GothEntryForm(ModelForm):
+        class Meta:
+            model = Product 
+            fields = ["name", "price", "description", "gothness"]
+    ```
+- Add import ```redirect``` at the top of ```views.py``` file in the main directory then create a new function for adding the new product.
+    ```
+    def create_product(request):
+    form = GothEntryForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+    ```
+- Then, change the ```show_main``` function to the following.
+    ```
+    def show_main(request):
+    goth_entries = Product.objects.all()
+    context = {
+        'app_name': 'goth-store',
+        'name': 'Kezia Salsalina Agtyra Sebayang',
+        'class': 'PBP KKI', 
+        'product_entries' : goth_entries,
+    }
+
+    return render(request, 'main.html', context)
+    ```
+- Open the ```urls.py``` file in the main directory and import the ```create_product``` function and add the URL path to the urlpatterns variable.
+    ```
+    from django.urls import path
+    from main.views import show_main, create_product
+
+    app_name = 'main'
+
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('create-product', create_product, name='create_product'),
+        ]
+    ```
+- Lastly, create a new HTML file called ```create_product.html``` and add the following code.
+    ```
+    {% extends 'base.html' %} 
+    {% block content %}
+    <h1>Add New Product</h1>
+
+    <form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+        <td></td>
+        <td>
+            <input type="submit" value="Add Product" />
+        </td>
+        </tr>
+    </table>
+    </form>
+
+    {% endblock %}
+    ```
+
+#### ✔️Add 4 views to view the added objects in XML, JSON, XML by ID, and JSON by ID formats.
+- Open the ```views.py``` file in the main directory and add these imports at the top.
+    ```
+    from django.http import HttpResponse
+    from django.core import serializers
+    ```
+- Open the ```views.py``` file in the main directory and create four new functions like the following. 
+    ```
+    def show_xml(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+    def show_json(request):
+        data = Product.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+    def show_xml_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+    def show_json_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+#### ✔️Create URL routing for each of the views added in point 2.
+- Open the ```urls.py``` file in the main directory and import the functions in this line.
+    ```from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id```
+- Add the URL path to the urlpatterns variable in the ```urls.py``` file.
+    ```
+    urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('create-product', create_product, name='create_product'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
+]   ```
+
+### POSTMAN
+#### XML
+![alt text](xml.png)
+#### JSON
+![alt text](json.png)
+#### XML BY ID
+![alt text](xml by id.png)
+#### JSON BY ID
+![alt text](json by id.png)
