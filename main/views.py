@@ -9,7 +9,7 @@ def show_main(request):
     context = {
         'app_name': 'goth-store',
         'name': 'Kezia Salsalina Agtyra Sebayang',
-        'class': 'PBD KKI', 
+        'class': 'PBP KKI', 
         'product_entries' : goth_entries,
     }
 
