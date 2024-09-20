@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 import uuid
 
@@ -7,3 +8,4 @@ class Product(models.Model):
     price = models.IntegerField()
     description = models.TextField()
     gothness = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
