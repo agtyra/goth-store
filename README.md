@@ -50,7 +50,7 @@
     ```
 #### ✔️Perform routing in the project so that the application main can run
 - Open the ```urls.py``` file inside the ```goth_store``` project and fill it with the code below. 
-    ```
+    ```py
     from django.contrib import admin
     from django.urls import path, include
 
@@ -462,7 +462,7 @@ Django remembers logged-in users through the use of session cookies. When a user
     PRODUCTION = os.getenv("PRODUCTION", False)
     DEBUG = not PRODUCTION
     ```
--These steps should make the project's Product model connected to the User model.
+- These steps should make the project's Product model connected to the User model.
 
 #### ✔️Display logged in user details such as username and apply cookies like last login to the application's main page.
 - First, open ```views.py``` in the main subdirectory. Add some imports at the top.
