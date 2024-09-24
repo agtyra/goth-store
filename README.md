@@ -2,6 +2,7 @@
 
 <details>
 <Summary><b>ASSIGNMENT 2</b></summary>
+
 #### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
 ### 1. Implementation of the Checklist: Step-by-Step 📝
 #### ✔️Create a new Django project.
@@ -138,6 +139,7 @@
 
  <details>
 <Summary><b>ASSIGNMENT 3</b></summary>
+
 ###  1. Explain why we need data delivery in implementing a platform.
 - Data delivery is crucial in platform implementation because it enables communication between different components, services, or systems. Whether it’s between the front end and the back end, or between various microservices in a distributed architecture, data needs to be exchanged seamlessly for the platform to function properly. For example, user actions on the front end often require data from the server or database, which is then processed and delivered back to be displayed to the user. Data delivery also ensures that external systems or APIs can integrate with the platform to enhance its functionality, such as with payment gateways or external authentication services. Without efficient data delivery, a platform would fail to provide a cohesive user experience and proper functionality.
 
