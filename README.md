@@ -1,6 +1,6 @@
 # 💀 ⛓️ Goth Store ⚰️🦇
 
-#### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
+## 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
 
 <details>
 <Summary><b>ASSIGNMENT 2</b></summary>
@@ -420,7 +420,8 @@
     ```
 - After implementing all these steps, I have restricted access to the main page and implement the register, login, and logout functions
 
-#### ✔️Make two user accounts with three dummy data each, using the model made in the application beforehand so that each data can be accessed by each account locally.#### 1st account
+#### ✔️Make two user accounts with three dummy data each, using the model made in the application beforehand so that each data can be accessed by each account locally.
+#### 1st account
 ![alt text](images/hayleym.png)
 #### 2nd account
 ![alt text](images/elle.png)
