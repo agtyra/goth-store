@@ -1,9 +1,10 @@
 # 💀 ⛓️ Goth Store ⚰️🦇
 
+#### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
+
 <details>
 <Summary><b>ASSIGNMENT 2</b></summary>
 
-#### 🔗[PWS APPLICATION](http://kezia-salsalina-gothstore.pbp.cs.ui.ac.id)
 ### 1. Implementation of the Checklist: Step-by-Step 📝
 #### ✔️Create a new Django project.
 - Create a new directory with the name ```"goth-store"```
@@ -285,7 +286,7 @@
 - Authentication is the process of verifying a user's identity, typically through a username and password. Once authenticated, the system knows who the user is. On the other hand, authorization determines what actions or resources the authenticated user is allowed to access. It controls permissions based on the user's role or status. In Django, authentication is handled through the built-in auth system, where users can log in by providing a username and password that are verified against the database. Once authenticated, Django creates a session for the user, storing it in a cookie, so they remain logged in across requests. Authorization is implemented using Django's permissions and groups system, where specific permissions are assigned to users or groups to control what they can access or modify in the application. Django checks these permissions when a user tries to perform an action or view specific content. When a user logs in, Django first authenticates their credentials and, once verified, uses authorization to determine their level of access within the system.
 
 ### 4. How does Django remember logged-in users? Explain other uses of cookies and whether all cookies are safe to use.
-Django remembers logged-in users through the use of session cookies. When a user logs in, Django creates a session ID and stores it in a cookie on the user's browser. This session ID allows Django to track the user across different pages without requiring them to log in again on each request. Besides session management, cookies can be used for storing preferences, tracking user behavior, and personalizing content. However, cookies can be vulnerable to attacks like cross-site scripting (XSS) or session hijacking if not properly secured.
+- Django remembers logged-in users through the use of session cookies. When a user logs in, Django creates a session ID and stores it in a cookie on the user's browser. This session ID allows Django to track the user across different pages without requiring them to log in again on each request. Besides session management, cookies can be used for storing preferences, tracking user behavior, and personalizing content. However, cookies can be vulnerable to attacks like cross-site scripting (XSS) or session hijacking if not properly secured.
 
 ### 5. Explain how did you implement the checklist step-by-step
 #### ✔️Implement the register, login, and logout functions so that the user can access the application freely.
@@ -419,10 +420,9 @@ Django remembers logged-in users through the use of session cookies. When a user
     ```
 - After implementing all these steps, I have restricted access to the main page and implement the register, login, and logout functions
 
-#### ✔️Make two user accounts with three dummy data each, using the model made in the application beforehand so that each data can be accessed by each account locally.
-##### 1st account
+#### ✔️Make two user accounts with three dummy data each, using the model made in the application beforehand so that each data can be accessed by each account locally.#### 1st account
 ![alt text](images/hayleym.png)
-##### 2nd account
+#### 2nd account
 ![alt text](images/elle.png)
 
 #### ✔️Connect the models Product and User.
@@ -466,22 +466,22 @@ Django remembers logged-in users through the use of session cookies. When a user
 
 #### ✔️Display logged in user details such as username and apply cookies like last login to the application's main page.
 - First, open ```views.py``` in the main subdirectory. Add some imports at the top.
-```py
-import datetime
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-```
+    ```py
+    import datetime
+    from django.http import HttpResponseRedirect
+    from django.urls import reverse
+    ```
 - In the ```login_user``` function, replace the code in the if ```form.is_valid()``` block
-```py
-...
-if form.is_valid():
-    user = form.get_user()
-    login(request, user)
-    response = HttpResponseRedirect(reverse("main:show_main"))
-    response.set_cookie('last_login', str(datetime.datetime.now()))
-    return response
-...
-```
+    ```py
+    ...
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main"))
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ...
+    ```
 - In the ```show_main ```function, add the snippet to the ```context``` variable
     ````py 
     'last_login': request.COOKIES['last_login']
