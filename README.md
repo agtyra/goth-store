@@ -761,6 +761,6 @@
         </script>
     </nav>
     ```
-- This navbar is responsive and have a hamburger icon in the mobil version of the website.
+- This navbar is responsive and have a hamburger icon in the mobile version of the website.
   
 </details>
