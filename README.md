@@ -521,7 +521,7 @@
 - On the other hand, CSS Grid is a two-dimensional layout system, allowing items to be arranged in both rows and columns. Grid is ideal for creating more complex layouts, like an entire webpage structure with header, sidebar, and content areas. By defining rows and columns, Grid provides finer control over both vertical and horizontal layout. Properties such as `grid-template-rows` and `grid-template-columns` let developers create structured grids with ease. For example, using `display: grid` with `grid-template-columns: 1fr 2fr;` will create a two-column layout with flexible widths. Flexbox and Grid are often used together, as they complement each other, allowing for both simple and complex designs to be created responsively.
 
 ### 5. Implementation of the checklist step by step
-#### ✔️ Implement functions to delete and edit products.
+#### ✔️Implement functions to delete and edit products.
 - First, I open my ```views.py``` file in the ```main``` folder and add these two functions.
     ```py
     def edit_product(request, id):
@@ -559,7 +559,208 @@
     path('delete/<uuid:id>', delete_product, name='delete_product'),
     ...
     ```
+#### ✔️Customize the design of the HTML templates that have been created in previous assignments using CSS or a CSS framework 
+- I choose Tailwind as the CSS Framework that I'm going to use. To add it to my project, I open the ```base.html``` file that was previously created in the ```templates``` folder located in my project root and  add the Tailwind cdn script in the head section like the code below
+    ```html
+    <head>
+    {% block meta %}
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock meta %}
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    </head>
+    ```
+#### ✔️Customize the login, register, and add product pages to be as attractive as possible.
+- So first, I create a ```global.css``` file in /static/css in the root directory so that I could add custom styling on the pages. 
+- Then I customise the ```login.html```, ```register.html```, and ```create_product.html``` the way I wanted it to be.
 
+#### ✔️Customize the product list page to be more attractive and responsive. If there are no products saved in the application, the product list page will display an image and a message that no products are registered.
+- So first, I create ```images``` folder inside the ```static``` directory. I then imported ```bat.png``` inside it and open my ```main.html``` file. I then add some styling and added ```bat.png``` in it. Here is my final ```main.html``` code:
+    ```html
+    {% extends 'base.html' %}
+    {% load static %}
+
+    {% block meta %}
+    <title>Product List | Goth Store</title>
+    {% endblock meta %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+
+    <!-- Main Section Wrapper -->
+    <div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen flex flex-col wallpaper">
+    <div class="p-2 mb-6 relative">
+        <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+        {% include "card_info.html" with title='Name' value=name %}
+        {% include "card_info.html" with title='Class' value=class %}
+        </div>
+        <div class="h-full w-full py-6  absolute top-0 left-0 z-20 md:hidden flex ">
+        <div class="h-full min-w-4 bg-red-700 mx-auto">
+        </div>
+        </div>
+    </div>
+
+
+
+        <!-- Add New Product Button -->
+        <div class="flex justify-end mb-8">
+            <a href="{% url 'main:create_product' %}" class="text-center bg-red-700 hover:bg-red-800 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl logout-font gothic-font">
+                Add New Product
+            </a>
+        </div>
+
+        <!-- No Products Available Section -->
+        {% if not product_entries %}
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <img src="{% static 'images/bat.png' %}" class="w-40 h-40 mb-6 opacity-70"/>
+            <p class="text-center text-white gothic-readable text-lg tracking-wide">
+                No products are available in the underworld yet...
+            </p>
+        </div>
+
+        <!-- Product Cards Section -->
+        {% else %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in product_entries %}  
+                {% include 'product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+    {% endblock content %}
+    ```
+#### ✔️If there are products saved, the product list page will display details of each product using cards. For each product card, create two buttons to edit and delete the product on that card!
+- So first, I create ```product_card.html``` inside ```main/templates``` directory. I did some styling and added the edit and trash button in the end of the code. Here is my final code of the card:
+    ```html
+    <div class="relative bg-black border-b-8 border-red-800 rounded-none shadow-md p-6 mb-10 transform hover:scale-105 transition duration-300 ease-in-out">
+
+        <!-- Floating Decorative Accent (Top Center) -->
+        <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 shadow-lg rounded-full">
+        <i class="fas fa-cross fa-2x"></i>
+        </div>
     
-
+        <!-- Product Name with Subtle Underline -->
+        <div class="text-center mb-4 border-b-2 border-red-700 pb-2">
+        <h2 class="text-3xl gothic-font tracking-widest text-white">
+            {{ product.name }}
+        </h2>
+        </div>
+    
+        <!-- Centered Product Information Section -->
+        <div class="grid grid-cols-1 gap-6 text-center">
+        
+        <!-- Description Section with Vertical Line -->
+        <div class="relative">
+            <p class="text-white gothic-readable italic text-lg px-6 relative z-10">
+            "{{ product.description }}"
+            </p>
+        </div>
+    
+        <!-- Price Section with Blocky Borders -->
+        <div class="border-2 border-black bg-gray-100 py-2 rounded-lg text-red-700 text-2xl gothic-font tracking-wider">
+            Price: Rp{{ product.price }}
+        </div>
+        
+        <!-- Gothness Meter with Minimalistic Style -->
+        <div class="py-4">
+            <p class="text-white gothic-font tracking-wide mb-2">Gothness Level</p>
+            <div class="w-full h-3 bg-gray-200 border-2 border-red-500 rounded-full overflow-hidden">
+            <div class="h-full bg-red-500" style="width: {% if product.gothness > 10 %}100%{% else %}{{ product.gothness }}0%{% endif %};"></div>
+            </div>
+        </div>
+        </div>
+    
+        <!-- Floating Buttons with Circular Frames -->
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-4 -mb-6">
+        <a href="{% url 'main:edit_product' product.pk %}" class="bg-white border-2 border-yellow-500 text-yellow-500 p-2 rounded-full hover:bg-yellow-500 hover:text-white transition duration-300 shadow-md">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a href="{% url 'main:delete_product' product.pk %}" class="bg-white border-2 border-red-500 text-red-500 p-2 rounded-full hover:bg-red-500 hover:text-white transition duration-300 shadow-md">
+            <i class="fas fa-trash"></i>
+        </a>
+        </div>
+    </div>
+    ```
+#### ✔️Create a navigation bar (navbar) for the features in the application that is responsive to different device sizes, especially mobile and desktop.
+- So, for the last checklist, I created a ```navbar.html``` file and did some styling here and there. Here is my final styling:
+    ```html
+    <nav class="bg-black shadow-2xl fixed top-0 left-0 z-40 w-screen border-b-4 border-red-800 gothic-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+            <!-- Gothic-style Font for Brand Name -->
+            <h1 class="text-3xl font-bold text-center text-white gothic-font tracking-widest">
+                Goth Store
+            </h1>
+            
+            </div>
+    
+            <!-- User Authentication Links -->
+            <div class="hidden md:flex flex-row items-center space-x-4"> <!-- Horizontal alignment with space between -->
+                {% if user.is_authenticated %}
+                <div class="flex flex-col text-right"> <!-- Text in a vertical stack -->
+                    <span class="text-white italic gothic-readable">Welcome, {{ user.username }}</span>
+                    <span class="text-xs text-white italic gothic-readable">Last Login: {{last_login}}</span> <!-- Last Login Info -->
+                </div>
+                <!-- Logout Button -->
+                <a href="{% url 'main:logout' %}" class="text-center bg-red-700 hover:bg-red-800 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl logout-font gothic-font">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{% url 'main:login' %}" class="text-center bg-purple-700 hover:bg-purple-900 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl mr-2 gothic-font">
+                    Login
+                </a>
+                <a href="{% url 'main:register' %}" class="text-center bg-gray-700 hover:bg-gray-900 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl gothic-font">
+                    Register
+                </a>
+                {% endif %}
+            </div>
+            
+    
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+            <button class="mobile-menu-button">
+                <svg class="w-8 h-8 text-gray-200 hover:text-gray-100 transition duration-300 ease-in-out" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            </div>
+        </div>
+        </div>
+    
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden bg-black text-gray-400 px-4 w-full shadow-lg border-t-2 border-red-700">
+        <div class="pt-4 pb-6 space-y-2 mx-auto">
+            {% if user.is_authenticated %}
+            <span class="block text-gray-400 italic px-3 py-2 gothic-readable">Welcome, {{ user.username }}</span>
+            <span class="block text-gray-400 italic px-3 py-2 gothic-readable">Last Login: {{ user.last_login }}</span> <!-- Last Login in Mobile -->
+            <a href="{% url 'main:logout' %}" class="block text-center bg-red-800 hover:bg-red-900 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg gothic-font">
+                Logout
+            </a>
+            {% else %}
+            <a href="{% url 'main:login' %}" class="block text-center bg-purple-700 hover:bg-purple-900 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg mb-2 gothic-font">
+                Login
+            </a>
+            <a href="{% url 'main:register' %}" class="block text-center bg-gray-700 hover:bg-gray-900 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg gothic-font">
+                Register
+            </a>
+            {% endif %}
+        </div>
+        </div>
+    
+        <!-- Toggle Mobile Menu Script -->
+        <script>
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+    
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+        </script>
+    </nav>
+    ```
+- This navbar is responsive and have a hamburger icon in the mobil version of the website.
+  
 </details>

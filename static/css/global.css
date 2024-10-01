@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
-/* Gothic Font */
-.gothic-font {
+/* Common font-family declarations */
+.gothic-font, 
+label, 
+button[type="submit"] {
     font-family: 'UnifrakturMaguntia', cursive;
-    letter-spacing: 0.1em;
 }
 
 /* Decorative Text for Story Elements */
-.gothic-decor {
+.gothic-decor, 
+.gothic-readable {
     font-style: italic;
     letter-spacing: 0.05em;
-    color: #d1c4e9
+    color: #d1c4e9;
 }
 
 /* Skull Icon Color Transitions */
@@ -25,60 +27,60 @@ svg.skull-icon {
     padding: 2px;
 }
 
+/* Gothic Readable Text */
 .gothic-readable {
     font-family: 'Cinzel';
-    font-style: italic;
-    font-size: 1.125rem; /* Slightly larger font size for readability */
+    font-size: 1.125rem;
     letter-spacing: 0.02em;
 }
 
 /* Full width and gothic-styled input fields */
-input[type="text"], input[type="number"], input[type="password"], textarea, select {
-    width: 100%; /* Full width */
-    padding: 10px; /* Padding inside the input */
-    margin-top: 8px; /* Space between label and input */
-    border-radius: 6px; /* Rounded corners */
-    border: 2px solid #990000; /* Red gothic border */
-    background-color: #1a1a1a; /* Dark background */
-    color: #ffffff; /* White text */
+input[type="text"], 
+input[type="number"], 
+input[type="password"], 
+textarea, 
+select {
+    width: 100%; 
+    padding: 10px; 
+    margin-top: 8px; 
+    border-radius: 6px;
+    border: 2px solid #990000;
+    background-color: #1a1a1a;
+    color: #ffffff;
 }
 
 /* Style for the text area (description) */
 textarea {
-    min-height: 150px; /* Ensure the textarea is taller */
-    resize: vertical;  /* Allow resizing vertically */
-}
-
-/* Ensure that labels match the gothic theme */
-label {
-    font-family: 'UnifrakturMaguntia', cursive;
-    color: #980202; /* Red gothic font for labels */
+    min-height: 150px; 
+    resize: vertical;  
 }
 
 /* Submit Button */
 button[type="submit"] {
-    font-family: 'UnifrakturMaguntia', cursive;
     letter-spacing: 0.05em;
     padding: 12px;
     border-radius: 6px;
     background-color: #830500;
     color: #ffffff;
     transition: all 0.3s ease;
-    width: 100%; /* Make the button span the full width */
+    width: 100%;
 }
 
 button[type="submit"]:hover {
     background-color: #cc1f1a;
     transform: scale(1.05);
 }
-.gothic-background {
-    background-image: url('/static/images/goth3.png');
+
+/* Background Styles */
+.gothic-background, .wallpaper {
     background-size: cover;
     background-position: center;
 }
 
+.gothic-background {
+    background-image: url('/static/images/alterego.png');
+}
+
 .wallpaper {
-    background-image: url('/static/images/skulll.jpg');
-    background-size: cover;
-    background-position: center;
+    background-image: url('/static/images/skull.jpg');
 }
