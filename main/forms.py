@@ -5,3 +5,5 @@ class GothEntryForm(ModelForm):
     class Meta:
         model = Product 
         fields = ["name", "price", "description", "gothness"]
+
+

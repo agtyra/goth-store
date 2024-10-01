@@ -503,3 +503,63 @@
     ```
 - These steps should display logged in user details such as username and apply cookies.
 </details>
+
+<details>
+<Summary><b>ASSIGNMENT 5</b></summary>
+
+### 1. Priority Order of CSS Selectors
+- When multiple CSS selectors apply to the same HTML element, the browser uses specificity to determine which styles to apply. Specificity is essentially a set of rules that helps the browser decide the weight or importance of each selector. The order of priority for CSS selectors is as follows: type selectors (e.g., `div`, `h1`) have the lowest specificity, followed by class selectors (e.g., `.my-class`) and pseudo-classes (e.g., `:hover`). ID selectors (e.g., `#my-id`) have higher specificity than classes and types. Inline styles, such as `<div style="color: red;">`, take precedence over all CSS selectors because they are directly applied to the element. Lastly, the `!important` rule overrides even inline styles and all other rules, making it the most powerful in terms of specificity. Understanding and properly managing specificity is key to ensuring that your CSS behaves as expected.
+
+### 2. Importance of Responsive Design in Web Development
+- Responsive design is crucial in modern web development because it ensures that websites function and display optimally across a wide variety of devices, including mobile phones, tablets, and desktops. In today’s digital age, users access websites from devices with vastly different screen sizes and resolutions. Without responsive design, websites can appear distorted or difficult to navigate on smaller screens, leading to a poor user experience. Responsive design allows for fluid grids, flexible images, and media queries that enable the website to adapt to different screen sizes and orientations automatically. This improves user engagement and accessibility while also enhancing SEO, as search engines like Google give higher rankings to mobile-friendly websites. Examples of applications with responsive designs include Twitter and YouTube, which seamlessly adjust their layouts across devices. In contrast, older sites or applications without responsive design may appear cluttered or unusable on mobile, leading to higher bounce rates and user frustration.
+
+### 3. Differences Between Margin, Border, and Padding
+- In CSS, margin, border, and padding are all part of the box model that controls the space around HTML elements, but they serve different purposes. Margin is the space outside an element, separating it from other elements on the page. It's used to create space between elements and can collapse between adjacent elements. Padding is the space between the content of an element and its border. It pushes the content inward, creating an internal buffer inside the element. Unlike margin, padding adds to the total size of the element. Border is the line that surrounds the padding and content, and it can have various styles, colors, and thicknesses. 
+
+### 4. Flexbox and Grid Layout Concepts
+- Both Flexbox and Grid Layout are modern CSS layout systems designed to help developers create flexible, responsive designs. Flexbox is a one-dimensional layout system, meaning it organizes items in a single direction (either row or column). It’s excellent for laying out elements in a line, centering items, or distributing space between them dynamically. Flexbox is often used for components like navigation bars, buttons, or aligning items vertically and horizontally. For instance, using `display: flex` on a parent element will align all child elements in a flexible container. Properties like `justify-content` and `align-items` allow easy control of how elements are distributed.
+- On the other hand, CSS Grid is a two-dimensional layout system, allowing items to be arranged in both rows and columns. Grid is ideal for creating more complex layouts, like an entire webpage structure with header, sidebar, and content areas. By defining rows and columns, Grid provides finer control over both vertical and horizontal layout. Properties such as `grid-template-rows` and `grid-template-columns` let developers create structured grids with ease. For example, using `display: grid` with `grid-template-columns: 1fr 2fr;` will create a two-column layout with flexible widths. Flexbox and Grid are often used together, as they complement each other, allowing for both simple and complex designs to be created responsively.
+
+### 5. Implementation of the checklist step by step
+#### ✔️ Implement functions to delete and edit products.
+- First, I open my ```views.py``` file in the ```main``` folder and add these two functions.
+    ```py
+    def edit_product(request, id):
+    product = Product.objects.get(pk = id)
+
+    form = GothEntryForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+    def delete_product(request, id):
+        product = Product.objects.get(pk = id)
+        product.delete()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    ```
+- Then, at the same file I add these imports.
+    ```py
+    from django.shortcuts import .., reverse
+    from django.http import .., HttpResponseRedirect
+    ```
+
+- Then , I create a new file called ```edit_product.html``` in ```main/templates``` subdirectory.
+
+- Lastly, I open the ```urls.py``` in the ```main``` folder and import the functions I've created and added URL paths to ```urlpatterns```
+    ```py
+    from main.views import edit_product, delete_product
+    ```
+    ```py
+    ...
+    path('edit-product/<uuid:id>', edit_product, name='edit_product'),
+    path('delete/<uuid:id>', delete_product, name='delete_product'),
+    ...
+    ```
+
+    
+
+</details>

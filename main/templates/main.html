@@ -1,45 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Product List | Goth Store</title>
+{% endblock meta %}
+
 {% block content %}
-<h1>Goth Store</h1>
+{% include 'navbar.html' %}
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
+<!-- Main Section Wrapper -->
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen flex flex-col wallpaper">
+  <div class="p-2 mb-6 relative">
+    <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+      {% include "card_info.html" with title='Name' value=name %}
+      {% include "card_info.html" with title='Class' value=class %}
+    </div>
+    <div class="h-full w-full py-6  absolute top-0 left-0 z-20 md:hidden flex ">
+      <div class="h-full min-w-4 bg-red-700 mx-auto">
+      </div>
+    </div>
+  </div>
 
-<h5>Class:</h5>
-<p>{{ class }}</p>
 
-{% if not product_entries %}
-<p>There are no product in goth store.</p>
-{% else %}
-<table>
-  <tr>
-    <th>Product Name</th>
-    <th>Price</th>
-    <th>Description</th>
-    <th>Gothness</th>
-  </tr>
 
-  {% comment %} This is how to display product
-  {% endcomment %} 
-  {% for product_entry in product_entries %}
-  <tr>
-    <td>{{product_entry.name}}</td>
-    <td>{{product_entry.price}}</td>
-    <td>{{product_entry.description}}</td>
-    <td>{{product_entry.gothness}}</td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
+    <!-- Add New Product Button -->
+    <div class="flex justify-end mb-8">
+        <a href="{% url 'main:create_product' %}" class="text-center bg-red-700 hover:bg-red-800 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl logout-font gothic-font">
+            Add New Product
+        </a>
+    </div>
 
-<br />
+    <!-- No Products Available Section -->
+    {% if not product_entries %}
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+        <img src="{% static 'images/bat.png' %}" class="w-40 h-40 mb-6 opacity-70"/>
+        <p class="text-center text-white gothic-readable text-lg tracking-wide">
+            No products are available in the underworld yet...
+        </p>
+    </div>
 
-<a href="{% url 'main:create_product' %}">
-  <button>Add New Product</button>
-</a>
+    <!-- Product Cards Section -->
+    {% else %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for product in product_entries %}  
+            {% include 'product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+    {% endif %}
 
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-<h5>Last login session: {{ last_login }}</h5>
+</div>
 {% endblock content %}

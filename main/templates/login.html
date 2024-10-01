@@ -1,32 +1,78 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>Login</title>
+<title>Enter the Shadows | Gothic Login</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<!-- Centered Container -->
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 gothic-background">
+  <!-- Main Content Wrapper with Borders -->
+  <div class="max-w-lg w-full p-10 bg-black border-4 border-red-800 rounded-lg shadow-2xl space-y-8 relative">
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
+    <!-- Gothic Header with FontAwesome Skull Icons -->
+    <div class="text-center">
+      <h2 class="text-gray-200 text-5xl gothic-font tracking-wider drop-shadow-md relative inline-block">
+        Enter the Shadows
+      </h2>
+      <p class="mt-3 text-red-300 italic gothic-readable text-lg">
+        The night calls, will you answer?
+      </p>
+    </div>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
-</div>
+    <!-- Login Form -->
+    <form class="space-y-6" method="POST" action="">
+      {% csrf_token %}
+      <input type="hidden" name="remember" value="true">
 
+      <!-- Input Fields with Gothic Borders -->
+      <div class="space-y-4">
+        <!-- Username Field -->
+        <div>
+          <label for="username" class="sr-only">Username</label>
+          <input id="username" name="username" type="text" required class="block w-full px-4 py-3 bg-gray-900 text-gray-300 border-2 border-red-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 gothic-input transition-all duration-300 ease-in-out" placeholder="Your secret name...">
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="sr-only">Password</label>
+          <input id="password" name="password" type="password" required class="block w-full px-4 py-3 bg-gray-900 text-gray-300 border-2 border-red-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 gothic-input transition-all duration-300 ease-in-out" placeholder="Your shadowed key...">
+        </div>
+      </div>
+
+      <!-- Submit Button with Skull Icon -->
+      <div>
+        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border-4 border-red-600 text-lg font-semibold text-white bg-gray-800 hover:bg-red-800 hover:border-red-900 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 gothic-font transition-all duration-300 ease-in-out transform hover:scale-105">
+          <!-- Left Skull Icon in Button -->
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <i class="fas fa-skull text-red-400 group-hover:text-white transition-all duration-300"></i>
+          </span>
+          Cross the Threshold
+        </button>
+      </div>
+    </form>
+
+    <!-- Flash Messages Section -->
+    {% if messages %}
+    <div class="mt-6">
+      {% for message in messages %}
+        <div class="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded relative shadow-lg" role="alert">
+          <span class="block sm:inline">{{ message }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Registration Link -->
+    <div class="text-center mt-6">
+      <p class="text-sm text-gray-400 gothic-readable">
+        Not yet part of the underworld?
+        <a href="{% url 'main:register' %}" class="text-sm  text-red-300 hover:text-red-500 gothic-readable">
+          Join the Order
+        </a>
+      </p>
+    </div>
+
+  </div> <!-- End Main Content Wrapper -->
+</div> <!-- End Centering Container -->
 {% endblock content %}

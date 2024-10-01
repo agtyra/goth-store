@@ -1,0 +1,49 @@
+<div class="relative bg-black border-b-8 border-red-800 rounded-none shadow-md p-6 mb-10 transform hover:scale-105 transition duration-300 ease-in-out">
+
+    <!-- Floating Decorative Accent (Top Center) -->
+    <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 shadow-lg rounded-full">
+      <i class="fas fa-cross fa-2x"></i>
+    </div>
+  
+    <!-- Product Name with Subtle Underline -->
+    <div class="text-center mb-4 border-b-2 border-red-700 pb-2">
+      <h2 class="text-3xl gothic-font tracking-widest text-white">
+        {{ product.name }}
+      </h2>
+    </div>
+  
+    <!-- Centered Product Information Section -->
+    <div class="grid grid-cols-1 gap-6 text-center">
+      
+      <!-- Description Section with Vertical Line -->
+      <div class="relative">
+        <p class="text-white gothic-readable italic text-lg px-6 relative z-10">
+          "{{ product.description }}"
+        </p>
+      </div>
+  
+      <!-- Price Section with Blocky Borders -->
+      <div class="border-2 border-black bg-gray-100 py-2 rounded-lg text-red-700 text-2xl gothic-font tracking-wider">
+        Price: Rp{{ product.price }}
+      </div>
+      
+      <!-- Gothness Meter with Minimalistic Style -->
+      <div class="py-4">
+        <p class="text-white gothic-font tracking-wide mb-2">Gothness Level</p>
+        <div class="w-full h-3 bg-gray-200 border-2 border-red-500 rounded-full overflow-hidden">
+          <div class="h-full bg-red-500" style="width: {% if product.gothness > 10 %}100%{% else %}{{ product.gothness }}0%{% endif %};"></div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Floating Buttons with Circular Frames -->
+    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-4 -mb-6">
+      <a href="{% url 'main:edit_product' product.pk %}" class="bg-white border-2 border-yellow-500 text-yellow-500 p-2 rounded-full hover:bg-yellow-500 hover:text-white transition duration-300 shadow-md">
+        <i class="fas fa-edit"></i>
+      </a>
+      <a href="{% url 'main:delete_product' product.pk %}" class="bg-white border-2 border-red-500 text-red-500 p-2 rounded-full hover:bg-red-500 hover:text-white transition duration-300 shadow-md">
+        <i class="fas fa-trash"></i>
+      </a>
+    </div>
+  </div>
+  
