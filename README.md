@@ -764,3 +764,28 @@
 - This navbar is responsive and have a hamburger icon in the mobile version of the website.
   
 </details>
+
+<details>
+<Summary><b>ASSIGNMENT 6</b></summary>
+
+### 1. Explain the benefits of using JavaScript in developing web applications!
+- JavaScript is great for making websites more interactive and responsive. It runs directly in the browser, so it can quickly respond to things like clicks, form submissions, and other user actions without needing to refresh the page or contact the server every time. This makes the website feel faster and smoother for users. Plus, JavaScript works on all modern browsers, so it’s easy to create cross-platform apps that work on any device.
+
+- Another key benefit is how JavaScript helps create dynamic content. You can build things like interactive forms, animations, or real-time updates, making the web experience more engaging. This level of interactivity is hard to achieve without JavaScript, which is why it’s such a popular choice for web developers.
+
+### 2. Explain why we need to use await when we call fetch()! What would happen if we don't use await?
+- When we use fetch() in JavaScript, we’re making an HTTP request, but it doesn’t happen instantly. Instead, it returns a Promise, which means the request is still in progress. If you use await, it makes sure the code waits until the response is ready before moving on to the next line. This helps keep things in order, especially when you need to use the response data right away.
+
+- If we don’t use await, the rest of the code will run without waiting for the request to finish. So, if you try to use the data that hasn’t arrived yet, you’ll likely get errors or unexpected behavior because the data simply isn’t ready.
+
+### 3. Why do we need to use the csrf_exempt decorator on the view used for AJAX POST?
+- Django, like many web frameworks, protects against something called CSRF (Cross-Site Request Forgery), which helps prevent attackers from making unwanted requests on behalf of users. When making a POST request through AJAX, Django expects a special CSRF token to be included to verify that the request is legitimate.
+
+- However, sometimes it’s tricky to include this token in AJAX requests, so we use the csrf_exempt decorator to bypass this protection for that specific view. If we don’t use it (or include the token another way), Django will block the request, thinking it might be unsafe. Just be careful when using csrf_exempt, as disabling this protection can open up security risks if not managed properly.
+
+### 4. Why can't the sanitization be done just in the front-end?
+- Doing sanitization in the back-end ensures that no matter what users try to send to your server, it gets checked and cleaned up. This protects my app from serious security issues like SQL injection or cross-site scripting (XSS). In short, the front-end helps with usability, but the back-end is where the real protection happens.
+
+### 5. Implementation of the checklist step-by-step
+
+</details>
