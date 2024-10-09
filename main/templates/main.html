@@ -88,14 +88,19 @@
       method: "POST",
       body: new FormData(document.querySelector('#GothEntryForm')),
     })
-    .then(response => refreshProductEntries())
-  
-    document.getElementById("GothEntryForm").reset(); 
-    document.querySelector("[data-modal-toggle='crudModal']").click();
+    .then(response => {
+      if (response.ok) {
+        refreshProductEntries(); 
+        document.getElementById("GothEntryForm").reset();  
+        hideModal();  
+      } else {
+        console.error('Failed to save product via AJAX.');
+      }
+    })
+    .catch(error => console.error('Error:', error));
 
-    return false;
+    return false; 
   }
-
   async function getProductEntries(){
     return fetch("{% url 'main:show_json' %}").then((res) => res.json())
   }

@@ -787,5 +787,252 @@
 - Doing sanitization in the back-end ensures that no matter what users try to send to your server, it gets checked and cleaned up. This protects my app from serious security issues like SQL injection or cross-site scripting (XSS). In short, the front-end helps with usability, but the back-end is where the real protection happens.
 
 ### 5. Implementation of the checklist step-by-step
+#### ✔️Modify the codes in data cards to able to use AJAX GET
+- In ```main.html```, I added this async function to be able to get data using show_json.
+    ```html
+    ...
+    <div id="product_cards"></div>
+    ...
+    <script>
+    async function getProductEntries(){
+        return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+    }
+    </script>
+    ```
+#### ✔️Retrieve data using AJAX GET
+- I modify my ```show_json``` in my ```views.py``` so that I could make sure that the data retrieved are only the data belonging to the logged-in user.
+    ``` py
+    def show_json(request):
+        data = Product.objects.filter(user=request.user)
+    ```
+#### ✔️Create a button that open a modal with a form for adding a product entry.
+- In the ```main.html``` file I set up the modal that contains a form for entering the product entry details
+    ```js
+    <!-- Modal for AJAX Entry -->
+    <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+        <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 border-b rounded-t bg-black">
+            <h3 class="text-xl gothic-font text-white">
+            Add New Product Entry
+            </h3>
+            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+            </button>
+        </div>
+        <!-- Modal body -->
+        <div class="px-6 py-4 space-y-6 form-style bg-black">
+            <form id="GothEntryForm">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-white">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-white">Description</label>
+                <textarea id="description" name="description" rows="3" class="text-white" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-sm font-medium text-white">Price</label>
+                <input type="number" id="price" name="price" min="1" step="0.01"  required>
+            </div>
+            <div class="mb-4">
+                <label for="gothness" class="block text-sm font-medium text-white">Gothness</label>
+                <input type="number" id="gothness" name="gothness" required>
+            </div>
+            </form>
+        </div>
+        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end bg-black">
+            <button type="button" class="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+            <button type="submit" id="submitProductEntry" form="GothEntryForm">Save</button>
+        </div>
+        </div>
+    </div>
+    ```
+- Then add the following Javascript Functions inside the ```<script>``` tag
+    ```js
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+
+    function showModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modal.classList.remove('hidden'); 
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50); 
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 150); 
+    }
+
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+    document.getElementById("GothEntryForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        addProductEntry();
+    })
+    ```
+- To create a button to trigger the modal, in the ```main.html``` I add this new button 
+    ```html
+    <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="text-center bg-red-700 hover:bg-red-800 text-gray-100 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-2xl logout-font gothic-font" onclick="showModal();">
+            Add New Product Entry by AJAX
+            </button>
+    ```
+
+#### ✔️Create a new view function to add a new product to the database.
+- In ```views.py```, I imported ```csrf_exempt``` and ```require_POST``` and implemented it on a new function. I also imported ```strip_tags``` to sanitize the entries.
+    ```py
+    @csrf_exempt
+    @require_POST
+    def add_product_ajax(request):
+        name = strip_tags(request.POST.get("name"))
+        price = request.POST.get("price")
+        description = strip_tags(request.POST.get("description"))
+        gothness = strip_tags(request.POST.get("gothness"))
+        user = request.user
+
+        new_product = Product(
+            name=name, price=price,
+            description=description, gothness=gothness,
+            user=user
+        )
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    ```
+#### ✔️Create a /create-ajax/ path that routes to the new view function you created.
+- In ```urls.py```, add this import and line of code.
+    ```py
+    from main.views import ..., add_product_ajax
+
+    main/urls.py
+    urlpatterns = [
+        ...
+        path('create-product-ajax', add_product_ajax, name='add_product_ajax'),
+    ]
+    ```
+
+#### ✔️Connect the form you created inside the modal to the /create-ajax/ path
+- To connect the form we create a new function in the block ```<script>``` such as the following:
+    ```js
+    function addProductEntry() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+        method: "POST",
+        body: new FormData(document.querySelector('#GothEntryForm')),
+        })
+        .then(response => {
+        if (response.ok) {
+            refreshProductEntries(); 
+            document.getElementById("GothEntryForm").reset();  
+            hideModal();  
+        } else {
+            console.error('Failed to save product via AJAX.');
+        }
+        })
+        .catch(error => console.error('Error:', error));
+
+        return false; 
+    }
+    ```
+#### ✔️Perform asynchronous refresh on the main page to display the latest item list without reloading the entire main page.
+- In main.hmtl, I created a new asynchronous function called refreshProductEntries.
+    ```js
+    async function refreshProductEntries() {
+        document.getElementById("product_cards").innerHTML = "";
+        document.getElementById("product_cards").className = "";
+        const productEntries = await getProductEntries();
+        let htmlString = "";
+        let classNameString = "";
+
+        if (productEntries.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <img src="{% static 'images/bat.png' %}" class="w-40 h-40 mb-6 opacity-70"/>
+            <p class="text-center text-white gothic-readable text-lg tracking-wide">
+                No products are available in the underworld yet...
+            </p>
+            </div>
+        `;
+        } else {
+        classNameString = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8";
+        productEntries.forEach((item) => {
+            const name = DOMPurify.sanitize(item.fields.name);
+            const description = DOMPurify.sanitize(item.fields.description);
+            const gothness = DOMPurify.sanitize(item.fields.gothness);
+
+            htmlString += `
+            <div class="relative bg-black border-b-8 border-red-800 rounded-none shadow-md p-6 mb-10 transform hover:scale-105 transition duration-300 ease-in-out">
+
+                <!-- Floating Decorative Accent (Top Center) -->
+                <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 shadow-lg rounded-full">
+                <i class="fas fa-cross fa-2x"></i>
+                </div>
+            
+                <!-- Product Name with Subtle Underline -->
+                <div class="text-center mb-4 border-b-2 border-red-700 pb-2">
+                <h2 class="text-3xl gothic-font tracking-widest text-white">
+                    ${name}
+                </h2>
+                </div>
+            
+                <!-- Centered Product Information Section -->
+                <div class="grid grid-cols-1 gap-6 text-center">
+                
+                <!-- Description Section with Vertical Line -->
+                <div class="relative">
+                    <p class="text-white gothic-readable italic text-lg px-6 relative z-10">
+                    ${description}
+                    </p>
+                </div>
+            
+                <!-- Price Section with Blocky Borders -->
+                <div class="border-2 border-black bg-gray-100 py-2 rounded-lg text-red-700 text-2xl gothic-font tracking-wider">
+                    Price: Rp${item.fields.price}
+                </div>
+                
+                <!-- Gothness Meter with Minimalistic Style -->
+                <div class="py-4">
+                    <p class="text-white gothic-font tracking-wide mb-2">Gothness Level</p>
+                    <div class="w-full h-3 bg-gray-200 border-2 border-red-500 rounded-full overflow-hidden">
+                    <div class="h-full bg-red-500" style="width: ${gothness > 10 ? '100%' : gothness * 10 + '%'};"></div>
+                    </div>
+                </div>
+                </div>
+            
+                
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-4 -mb-6">
+                <a href="/edit-product/${item.pk}" class="bg-white border-2 border-yellow-500 text-yellow-500 p-2 rounded-full hover:bg-yellow-500 hover:text-white transition duration-300 shadow-md">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="/delete/${item.pk}" class="bg-white border-2 border-red-500 text-red-500 p-2 rounded-full hover:bg-red-500 hover:text-white transition duration-300 shadow-md">
+                    <i class="fas fa-trash"></i>
+                </a>
+                </div>
+            </div>
+    
+            `;
+        });
+        }
+        document.getElementById("product_cards").className = classNameString;
+        document.getElementById("product_cards").innerHTML = htmlString;
+    }
+
+    refreshProductEntries();
+    ```
 
 </details>
