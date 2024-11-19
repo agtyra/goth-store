@@ -1,5 +1,6 @@
 import datetime
-from django.http import HttpResponseRedirect
+import json
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -124,3 +125,19 @@ def add_product_ajax(request):
     new_product.save()
 
     return HttpResponse(b"CREATED", status=201)
+
+@csrf_exempt
+def add_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        new_product = Product.objects.create(
+            user=request.user,
+            name=data["name"],
+            description=data["description"],
+            price=int(data["price"]),
+            gothness=int(data["gothness"])
+        )
+        new_product.save()
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
